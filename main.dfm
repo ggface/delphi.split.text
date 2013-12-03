@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 0
   Caption = #1047#1072#1076#1072#1095#1072'. '#1056#1072#1079#1073#1080#1074#1072#1077#1084' '#1090#1077#1082#1089#1090'.'
   ClientHeight = 321
-  ClientWidth = 518
+  ClientWidth = 550
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,7 +15,7 @@ object MainForm: TMainForm
   Scaled = False
   OnShow = FormShow
   DesignSize = (
-    518
+    550
     321)
   PixelsPerInch = 96
   TextHeight = 13
@@ -34,19 +34,26 @@ object MainForm: TMainForm
     Caption = #1058#1077#1082#1089#1090
   end
   object lbSmbCount: TLabel
-    Left = 507
+    Left = 510
     Top = 48
-    Width = 3
+    Width = 32
     Height = 13
     Alignment = taRightJustify
+    Anchors = [akTop, akRight]
   end
   object sgTextAfterSplit: TStringGrid
     Left = 8
     Top = 162
-    Width = 502
+    Width = 534
     Height = 151
     Anchors = [akLeft, akTop, akRight, akBottom]
+    DefaultColWidth = 100
+    FixedCols = 0
+    RowCount = 1
+    FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goThumbTracking]
     TabOrder = 0
+    ExplicitWidth = 502
   end
   object UpDown1: TUpDown
     Left = 129
@@ -62,13 +69,14 @@ object MainForm: TMainForm
     Top = 27
     Width = 121
     Height = 21
+    ReadOnly = True
     TabOrder = 2
     Text = '5'
   end
   object Memo: TMemo
     Left = 8
     Top = 67
-    Width = 502
+    Width = 534
     Height = 89
     Anchors = [akLeft, akTop, akRight]
     Lines.Strings = (
@@ -80,5 +88,6 @@ object MainForm: TMainForm
         #1102' '#1103#1095#1077#1081#1082#1091' '#1089#1090#1088#1080#1085#1075' '#1075#1088#1080#1076)
     TabOrder = 3
     OnChange = MemoChange
+    ExplicitWidth = 502
   end
 end
