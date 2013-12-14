@@ -34,14 +34,14 @@ object MainForm: TMainForm
     Caption = #1058#1077#1082#1089#1090
   end
   object lbSmbCount: TLabel
-    Left = 510
+    Left = 539
     Top = 48
-    Width = 32
+    Width = 3
     Height = 13
     Alignment = taRightJustify
     Anchors = [akTop, akRight]
   end
-  object sgTextAfterSplit: TStringGrid
+  object MyGrid: TStringGrid
     Left = 8
     Top = 162
     Width = 534
@@ -53,7 +53,6 @@ object MainForm: TMainForm
     FixedRows = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goThumbTracking]
     TabOrder = 0
-    ExplicitWidth = 502
   end
   object UpDown1: TUpDown
     Left = 129
@@ -88,6 +87,5 @@ object MainForm: TMainForm
         #1102' '#1103#1095#1077#1081#1082#1091' '#1089#1090#1088#1080#1085#1075' '#1075#1088#1080#1076)
     TabOrder = 3
     OnChange = MemoChange
-    ExplicitWidth = 502
   end
 end

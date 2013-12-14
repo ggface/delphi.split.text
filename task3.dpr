@@ -2,8 +2,7 @@ program task3;
 
 uses
   Forms,
-  main in 'main.pas' {MainForm},
-  glIteratorGrid in 'glIteratorGrid.pas';
+  main in 'main.pas' {MainForm};
 
 {$R *.res}
 

@@ -8,7 +8,7 @@ uses
 
 type
   TMainForm = class(TForm)
-    sgTextAfterSplit: TStringGrid;
+    MyGrid: TStringGrid;
     Label1: TLabel;
     UpDown1: TUpDown;
     eStringLength: TEdit;
@@ -18,81 +18,68 @@ type
     procedure MemoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-    procedure UpdateState;
-    procedure UpdateGrid;
-    function GetList(text: string; length: integer):TStringList;
   end;
 
-const
-  PREFIX_SMB_COUNT = 'Длина текста (символы): ';
 var
   MainForm: TMainForm;
 
 implementation
 
-uses glIteratorGrid;
-
 {$R *.dfm}
 
+// Событие при появлении формы
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-  UpdateState;
+// обновим вывод кол-ва символов в поле для текста
+  lbSmbCount.Caption := 'Длина текста (символы): ' +
+  IntToStr(Length(Memo.Lines.Text));
 end;
 
-function TMainForm.GetList;
-var
-  s: string;
-begin
-  result := TStringList.Create;
-  s := text;
-  while s<>'' do
-  begin
-    result.Add(Copy(s, 1, length));
-    Delete(s,1,length);
-  end;
-  s := '';
-end;
-
+// Событие при любом изменении текста в поле
 procedure TMainForm.MemoChange(Sender: TObject);
-begin
-  UpdateState;
-  UpdateGrid;
-end;
-
-procedure TMainForm.UpdateGrid;
 var
-  i: integer;
-  sl: TStringList;
-  ig: TglIteratorGrid;
+i, col,row: integer;
+  s:string;
+    sl: TStringList;
 begin
-  // Запрещаем форме перерисовываться
-  LockWindowUpdate(Handle);
-  // Очистим грид
-  with sgTextAfterSplit do
-    for i:=0 to ColCount-1 do
-      Cols[i].Clear;
+  // обновим вывод кол-ва символов в поле для текста
+  lbSmbCount.Caption := 'Длина текста (символы): ' +
+  IntToStr(Length(Memo.Lines.Text));
 
-  // Получим лист разбитый на стоки по N символов
-  sl := GetList(Memo.Lines.Text, UpDown1.Position);
-  // Подготовим итератор
-  ig := TglIteratorGrid.Create(sgTextAfterSplit.ColCount - 1, 0, 0);
-  for i := 0 to sl.Count - 1 do
+    // Очистим все поля грида
+    for i:=0 to MyGrid.ColCount-1 do
+      MyGrid.Cols[i].Clear;
+
+      // Получим лист разбитый на стоки по N символов
+      // N будет равно UpDown1.Position
+         sl := TStringList.Create; // создадим лист
+  s := Memo.Lines.Text; // поместим в переменную s текст из Мемо
+  while s<>'' do // пока s не станет пустой
   begin
-    // Увеличим кол-во строк если нужно
-    if (sgTextAfterSplit.RowCount < sgTextAfterSplit.RowCount + ig.CurrentY) then
-      sgTextAfterSplit.RowCount := ig.CurrentY + 1;
-    // Заполним ячейку
-    sgTextAfterSplit.Cells[ig.CurrentX, ig.CurrentY] := sl[i];
-    ig.Up;
+      sl.Add(Copy(s, 1, UpDown1.Position)); // копируем N символов и добавляем в лист
+    Delete(s,1,UpDown1.Position);// удаляем из s что скопировали
   end;
-  FreeAndNil(sl);
-    // Возобновляем перерисовку формы
-  LockWindowUpdate(0);
-end;
 
-procedure TMainForm.UpdateState;
-begin
-  lbSmbCount.Caption := PREFIX_SMB_COUNT + IntToStr(Length(Memo.Lines.Text));
+  col := 0; //номер поля в гриде
+  row:=0; //номер строки в гриде
+
+  // заполним грид элементами из нашего листа
+   for i := 0 to sl.Count - 1 do
+  begin
+  // заполним ячейку
+  MyGrid.Cells[col, row] := sl[i];
+
+  // если колонка последняя то добавим строку и обнулим col
+  if col = MyGrid.ColCount - 1 then
+  begin
+      MyGrid.RowCount := MyGrid.RowCount +1;
+      row := row+1;
+      col := 0;
+  end
+  else // если не последняя колонка, то сдиваемся вправо
+  col := col + 1;
+  end;
+
 end;
 
 end.
